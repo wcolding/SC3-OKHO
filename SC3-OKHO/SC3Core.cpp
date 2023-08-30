@@ -1,13 +1,10 @@
 #include "SC3Core.h"
 
-bool SC3Core::IsHealthFull(LiteSDK::GameObject& pawn)
+bool SC3Core::IsHealthFull(LiteSDK::GameObject& pawn, int& curHealth)
 {
     if (pawn.IsNotNull())
     {
-        int curHealth = pawn.GetPropertyValue<int>("Engine.Pawn.Health");
-        if (curHealth <= 0)
-            return true;
-
+        curHealth = pawn.GetPropertyValue<int>("Engine.Pawn.Health");
         int maxHealth = pawn.GetPropertyValue<int>("Echelon.EPawn.InitialHealth");
         return curHealth == maxHealth;
     }

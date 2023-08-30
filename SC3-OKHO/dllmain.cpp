@@ -6,6 +6,8 @@
 DWORD WINAPI ModThread(LPVOID hModule)
 {
     SC3Core core;
+    int health = 0;
+    
     while (true)
     {
         if (core.IsIGTRunning())
@@ -13,8 +15,10 @@ DWORD WINAPI ModThread(LPVOID hModule)
             auto esam = core.sdk.GetFirstInstance("EchelonCharacter.ESam");
 
             if (esam.IsNotNull())
-                if (!core.IsHealthFull(esam))
+            {
+                if (!core.IsHealthFull(esam, health) && (health > 0))
                     core.TryKillSam();
+            }
         }
 
         Sleep(400);

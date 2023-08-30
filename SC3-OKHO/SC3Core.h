@@ -8,6 +8,6 @@ private:
 public:
 	LiteSDK sdk;
 	bool IsIGTRunning();
-	bool IsHealthFull(LiteSDK::GameObject& pawn);
+	bool IsHealthFull(LiteSDK::GameObject& pawn, int& curHealth);
 	void TryKillSam();
 };
