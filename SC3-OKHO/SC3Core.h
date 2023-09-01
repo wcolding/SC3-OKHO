@@ -1,6 +1,16 @@
 #pragma once
 #include "LiteSDK.h"
 
+class PawnHealth
+{
+public:
+	int current = 0;
+	int max = 0;
+
+	bool IsHealthFull();
+	bool IsPawnDead();
+};
+
 class SC3Core
 {
 private:
@@ -8,6 +18,6 @@ private:
 public:
 	LiteSDK sdk;
 	bool IsIGTRunning();
-	bool IsHealthFull(LiteSDK::GameObject& pawn, int& curHealth);
+	PawnHealth GetPawnHealth(LiteSDK::GameObject& pawn);
 	void TryKillSam();
 };

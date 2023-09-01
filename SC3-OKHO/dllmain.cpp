@@ -16,7 +16,8 @@ DWORD WINAPI ModThread(LPVOID hModule)
 
             if (esam.IsNotNull())
             {
-                if (!core.IsHealthFull(esam, health) && (health > 0))
+                auto samHealth = core.GetPawnHealth(esam);
+                if (!samHealth.IsHealthFull() && !samHealth.IsPawnDead())
                     core.TryKillSam();
             }
         }
