@@ -44,14 +44,14 @@ LiteSDK::GameObject LiteSDK::GetGameObject(std::string name, bool useFullName)
 
 LiteSDK::GameObject LiteSDK::GetBaseObject(std::string name)
 {
-	return GetGameObject(name, true);
+	return CheckGameObject(GetGameObject(name, true));
 }
 
 std::vector<LiteSDK::GameObject> LiteSDK::GetInstances(std::string className)
 {
 	std::vector<GameObject> instances;
 
-	auto classObj = GetBaseObject(className);
+	auto classObj = GetGameObject(className, true);
 
 	if (classObj.ObjectPtr == nullptr)
 		classObj = GetGameObject(className, false); // try partial name if full name fails
@@ -85,7 +85,7 @@ LiteSDK::GameObject LiteSDK::GetFirstInstance(std::string className)
 {
 	auto instances = GetInstances(className);
 	if (instances.empty())
-		return GameObject(nullptr, this);
+		return GetEmptyGameObject();
 
 	return instances[0];
 }
@@ -94,7 +94,7 @@ LiteSDK::GameObject LiteSDK::GetNamedInstance(std::string name, std::string clas
 {
 	auto instances = GetInstances(className);
 	if (instances.empty())
-		return GameObject(nullptr, this);
+		return GetEmptyGameObject();
 
 	std::string curName;
 
@@ -109,7 +109,7 @@ LiteSDK::GameObject LiteSDK::GetNamedInstance(std::string name, std::string clas
 			return instance;
 	}
 
-	return GameObject(nullptr, this);
+	return GetEmptyGameObject();
 }
 
 std::string LiteSDK::ResolveObjectName(GenericObject* object, bool recursive) 
@@ -199,6 +199,19 @@ bool LiteSDK::ValidateObjects()
 	return false;
 }
 
+LiteSDK::GameObject LiteSDK::CheckGameObject(GameObject object)
+{
+	if (object.ObjectPtr == nullptr)
+		nullCount++;
+	return object;
+}
+
+LiteSDK::GameObject LiteSDK::GetEmptyGameObject()
+{
+	nullCount++;
+	return GameObject(nullptr, this);
+}
+
 std::string LiteSDK::GameObject::GetName()
 {
 	return sdk->ResolveObjectName(ObjectPtr, false);
@@ -237,9 +250,6 @@ LiteSDK::GameObject::GameObject(GenericObject* objPtr, LiteSDK* sdkPtr)
 {
 	ObjectPtr = objPtr;
 	sdk = sdkPtr;
-
-	if (objPtr == nullptr)
-		sdk->nullCount++;
 }
 
 bool LiteSDK::GameObject::IsNotNull()

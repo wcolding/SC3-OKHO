@@ -32,6 +32,6 @@ void SC3Core::TryKillSam()
     auto playerController = sdk.GetFirstInstance("EPlayerController");
     auto killSam = sdk.GetBaseObject("Echelon.EPlayerController.KillSam");
 
-    if (playerController.IsNotNull() && killSam.IsNotNull())
+    if (sdk.ValidateObjects())
         playerController.ProcessEvent(killSam, nullptr, nullptr);
 }

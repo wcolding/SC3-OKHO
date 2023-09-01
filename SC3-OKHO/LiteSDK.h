@@ -168,6 +168,8 @@ public:
 private:
 	std::string ResolveObjectName(GenericObject* object, bool recursive = true);
 	GameObject GetGameObject(std::string name, bool useFullName = true);
+	GameObject CheckGameObject(GameObject object);
+	GameObject GetEmptyGameObject();
 
 	int nullCount = 0;
 };
